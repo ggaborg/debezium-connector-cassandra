@@ -5,12 +5,26 @@
  */
 package io.debezium.connector.cassandra.transforms.type.deserializer;
 
-import org.apache.cassandra.db.marshal.AbstractType;
+import com.datastax.oss.driver.api.core.type.DataType;
+
+import io.debezium.connector.cassandra.transforms.DebeziumTypeDeserializer;
 
 /**
  * For deserializing logical-type columns in Cassandra, like UUID, TIMEUUID, Duration, etc.
  */
-public abstract class LogicalTypeDeserializer implements TypeDeserializer {
+public abstract class LogicalTypeDeserializer extends AbstractTypeDeserializer {
+
+    private Object abstractType;
+
+    public LogicalTypeDeserializer(DebeziumTypeDeserializer deserializer, Integer dataType, Object abstractType) {
+        super(deserializer, dataType, abstractType.getClass());
+        this.abstractType = abstractType;
+    }
+
+    @Override
+    public Object getAbstractType(DataType dataType) {
+        return abstractType;
+    }
 
     /**
      * Format deserialized value from Cassandra to an object that fits it's kafka Schema.
@@ -18,6 +32,6 @@ public abstract class LogicalTypeDeserializer implements TypeDeserializer {
      * @param value the deserialized value of a column in cassandra
      * @return the formatted object from deserialized value
      */
-    public abstract Object formatDeserializedValue(AbstractType<?> abstractType, Object value);
+    public abstract Object formatDeserializedValue(Object abstractType, Object value);
 
 }

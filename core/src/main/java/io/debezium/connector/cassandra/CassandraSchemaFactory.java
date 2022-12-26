@@ -34,7 +34,6 @@ import com.datastax.oss.driver.api.core.metadata.schema.TableMetadata;
 import com.datastax.oss.driver.api.core.type.DataType;
 
 import io.debezium.DebeziumException;
-import io.debezium.connector.cassandra.transforms.CassandraTypeConverter;
 import io.debezium.connector.cassandra.transforms.CassandraTypeDeserializer;
 import io.debezium.schema.SchemaFactory;
 
@@ -194,8 +193,7 @@ public class CassandraSchemaFactory extends SchemaFactory {
             SchemaBuilder schemaBuilder = SchemaBuilder.struct().name(ROW_SCHEMA_NAME).version(ROW_SCHEMA_VERSION);
 
             for (int i = 0; i < columnNames.size(); i++) {
-                Schema valueSchema = CassandraTypeDeserializer.getSchemaBuilder(
-                        CassandraTypeConverter.convert(columnsTypes.get(i))).build();
+                Schema valueSchema = CassandraTypeDeserializer.getSchemaBuilder(columnsTypes.get(i)).build();
                 String columnName = columnNames.get(i);
                 Schema optionalCellSchema = CellData.cellSchema(columnName, valueSchema, true);
                 if (optionalCellSchema != null) {
@@ -209,7 +207,7 @@ public class CassandraSchemaFactory extends SchemaFactory {
             return schemaBuilder.build();
         }
 
-        List<CellData> getPrimary() {
+        public List<CellData> getPrimary() {
             return this.cellMap.values().stream().filter(CellData::isPrimary).collect(Collectors.toList());
         }
 
