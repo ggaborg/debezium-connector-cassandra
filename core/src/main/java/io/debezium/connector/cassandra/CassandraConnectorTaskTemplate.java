@@ -48,9 +48,9 @@ public class CassandraConnectorTaskTemplate {
     private ProcessorGroup processorGroup;
     private Server httpServer;
     private JmxReporter jmxReporter;
-    private SchemaLoader schemaLoader;
-    private SchemaChangeListenerProvider schemaChangeListenerProvider;
-    private CassandraSpecificProcessors cassandraSpecificProcessors;
+    private final SchemaLoader schemaLoader;
+    private final SchemaChangeListenerProvider schemaChangeListenerProvider;
+    private final CassandraSpecificProcessors cassandraSpecificProcessors;
     private final ComponentFactory factory;
 
     public static void main(String[] args,

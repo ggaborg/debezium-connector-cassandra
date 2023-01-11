@@ -32,9 +32,9 @@ public class CommitLogIdxParser {
     private final CommitLogTransfer commitLogTransfer;
     private final Set<String> erroneousCommitLogs;
     private boolean completePrematurely = false;
-    private LogicalCommitLog commitLog;
-    private int pollingInterval;
-    private boolean realTimeProcessingEnabled;
+    private final LogicalCommitLog commitLog;
+    private final int pollingInterval;
+    private final boolean realTimeProcessingEnabled;
     private Integer offset;
 
     public CommitLogIdxParser(LogicalCommitLog commitLog, final CommitLogProcessorMetrics metrics,
@@ -81,7 +81,7 @@ public class CommitLogIdxParser {
 
                     if (commitLogPosition != null) {
                         metrics.setCommitLogPosition(commitLogPosition);
-                        processCommitLog(commitLog, commitLogPosition.intValue());
+                        processCommitLog(commitLog, commitLogPosition);
                         offset = commitLog.offsetOfEndOfLastWrittenCDCMutation;
                     }
                 }
@@ -92,7 +92,7 @@ public class CommitLogIdxParser {
             }
 
             LOGGER.info("Completed idx file for: {}", commitLog);
-            int commitLogPosition = offset == null ? 0 : offset.intValue();
+            int commitLogPosition = offset == null ? 0 : offset;
             metrics.setCommitLogPosition(commitLogPosition);
             processCommitLog(commitLog, commitLogPosition);
             return new CommitLogProcessingResult(commitLog);

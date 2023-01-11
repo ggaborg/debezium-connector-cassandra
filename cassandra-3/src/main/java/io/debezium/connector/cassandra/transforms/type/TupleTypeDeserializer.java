@@ -33,6 +33,7 @@ public class TupleTypeDeserializer extends AbstractTupleTypeDeserializer {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected Object getAbstractTypeInstance(List<?> innerAbstractTypes) {
         return new TupleType((List<AbstractType<?>>) innerAbstractTypes);
     }

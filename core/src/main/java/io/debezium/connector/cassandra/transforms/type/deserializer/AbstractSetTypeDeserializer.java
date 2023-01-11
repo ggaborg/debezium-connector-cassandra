@@ -56,7 +56,7 @@ public abstract class AbstractSetTypeDeserializer extends CollectionTypeDeserial
      * Format or deserialize each elements in deserialized list:
      * If the element is logical type, format the element.
      * If the element is UserType or TupleType, deserialize the element.
-     * @param abstractType the {@link AbstractType} of a column in Cassandra
+     * @param abstractType the AbstractType of a column in Cassandra
      * @param deserializedSet Set deserialized from Cassandra
      * @return A deserialized list from Cassandra with each element that fits in it's Kafka Schema.
      */

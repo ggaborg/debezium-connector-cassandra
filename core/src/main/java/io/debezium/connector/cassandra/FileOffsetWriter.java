@@ -48,8 +48,6 @@ public class FileOffsetWriter implements OffsetWriter {
     private final Properties snapshotProps = new Properties();
     private final Properties commitLogProps = new Properties();
 
-    private final File offsetDir;
-
     private final File snapshotOffsetFile;
     private final File commitLogOffsetFile;
 
@@ -61,12 +59,12 @@ public class FileOffsetWriter implements OffsetWriter {
             throw new CassandraConnectorConfigException("Offset file directory must be configured at the start");
         }
 
-        this.offsetDir = new File(offsetDir);
-        if (!this.offsetDir.exists()) {
-            Files.createDirectories(this.offsetDir.toPath());
+        File offsetDirectory = new File(offsetDir);
+        if (!offsetDirectory.exists()) {
+            Files.createDirectories(offsetDirectory.toPath());
         }
-        this.snapshotOffsetFile = Paths.get(this.offsetDir.getAbsolutePath(), SNAPSHOT_OFFSET_FILE).toFile();
-        this.commitLogOffsetFile = Paths.get(this.offsetDir.getAbsolutePath(), COMMITLOG_OFFSET_FILE).toFile();
+        this.snapshotOffsetFile = Paths.get(offsetDirectory.getAbsolutePath(), SNAPSHOT_OFFSET_FILE).toFile();
+        this.commitLogOffsetFile = Paths.get(offsetDirectory.getAbsolutePath(), COMMITLOG_OFFSET_FILE).toFile();
 
         snapshotOffsetFileLock = init(this.snapshotOffsetFile);
         commitLogOffsetFileLock = init(this.commitLogOffsetFile);
@@ -166,12 +164,12 @@ public class FileOffsetWriter implements OffsetWriter {
             FileLock lock = channel.tryLock();
             if (lock == null) {
                 throw new CassandraConnectorTaskException(
-                        "Failed to acquire file lock on " + lockPath.toString() + ". There might be another Cassandra Connector Task running");
+                        "Failed to acquire file lock on " + lockPath + ". There might be another Cassandra Connector Task running");
             }
             return lock;
         }
         catch (OverlappingFileLockException e) {
-            throw new CassandraConnectorTaskException("Failed to acquire file lock on " + lockPath.toString() + ". There might be another thread running", e);
+            throw new CassandraConnectorTaskException("Failed to acquire file lock on " + lockPath + ". There might be another thread running", e);
         }
     }
 

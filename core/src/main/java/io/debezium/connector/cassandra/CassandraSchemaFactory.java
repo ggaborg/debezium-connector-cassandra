@@ -195,7 +195,7 @@ public class CassandraSchemaFactory extends SchemaFactory {
             for (int i = 0; i < columnNames.size(); i++) {
                 Schema valueSchema = CassandraTypeDeserializer.getSchemaBuilder(columnsTypes.get(i)).build();
                 String columnName = columnNames.get(i);
-                Schema optionalCellSchema = CellData.cellSchema(columnName, valueSchema, true);
+                Schema optionalCellSchema = CellData.cellSchema(valueSchema, true);
                 if (optionalCellSchema != null) {
                     schemaBuilder.field(columnName, optionalCellSchema);
                 }
@@ -296,7 +296,7 @@ public class CassandraSchemaFactory extends SchemaFactory {
             }
         }
 
-        static Schema cellSchema(String columnName, Schema columnSchema, boolean optional) {
+        static Schema cellSchema(Schema columnSchema, boolean optional) {
             if (columnSchema == null) {
                 return null;
             }

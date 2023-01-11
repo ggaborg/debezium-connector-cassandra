@@ -54,12 +54,13 @@ public class UserDefinedTypeDeserializer extends AbstractUserDefinedTypeDeserial
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected Object getAbstractTypeInstance(DefaultUserDefinedType userType, List<String> fieldNames,
                                              List<?> innerAbstractTypes) {
         ByteBuffer typeNameBuffer = UTF8Type.instance.fromString(userType.getName().toString());
         List<FieldIdentifier> fieldIdentifiers = new ArrayList<>(fieldNames.size());
-        for (int i = 0; i < fieldNames.size(); i++) {
-            fieldIdentifiers.add(FieldIdentifier.forInternalString(fieldNames.get(i)));
+        for (String fieldName : fieldNames) {
+            fieldIdentifiers.add(FieldIdentifier.forInternalString(fieldName));
         }
         return new UserType(userType.getKeyspace().toString(),
                 typeNameBuffer,

@@ -34,34 +34,29 @@ public final class CassandraTypeDeserializer {
 
     private Map<Integer, TypeDeserializer> DATATYPE_MAP;
 
-    protected Function<Object, Object> baseType;
-
-    private static CassandraTypeDeserializer instance;
+    private Function<Object, Object> baseType;
 
     public enum DecimalMode {
         PRECISE,
         DOUBLE,
-        STRING;
+        STRING
     }
 
     public enum VarIntMode {
         PRECISE,
         LONG,
-        STRING;
+        STRING
     }
 
     private CassandraTypeDeserializer() {
     }
 
+    private static final class CassandraTypeDeserializerInstanceHolder {
+        private static final CassandraTypeDeserializer instance = new CassandraTypeDeserializer();
+    }
+
     public static CassandraTypeDeserializer getInstance() {
-        if (CassandraTypeDeserializer.instance == null) {
-            synchronized (CassandraTypeDeserializer.class) {
-                if (CassandraTypeDeserializer.instance == null) {
-                    CassandraTypeDeserializer.instance = new CassandraTypeDeserializer();
-                }
-            }
-        }
-        return CassandraTypeDeserializer.instance;
+        return CassandraTypeDeserializerInstanceHolder.instance;
     }
 
     public static void init(List<AbstractTypeDeserializer> typeDeserializers, DecimalMode decimalMode, VarIntMode varIntMode, Function<Object, Object> baseType) {
@@ -112,7 +107,7 @@ public final class CassandraTypeDeserializer {
     /**
      * Deserialize from cdc-log-sourced cassandra data.
      *
-     * @param abstractType the {@link AbstractType} of the non-collection column
+     * @param abstractType the AbstractType of the non-collection column
      * @param bb           the bytes of the non-collection column to deserialize
      * @return the deserialized object.
      */
@@ -130,7 +125,7 @@ public final class CassandraTypeDeserializer {
      * Deserialize from cdc-log-sourced cassandra data.
      *
      * @param collectionType the {@link CollectionType} of the collection column
-     * @param ccd            the ComplexColumnData of the collection column to deserialize
+     * @param bbList         the ComplexColumnData of the collection column to deserialize
      * @return the deserialized object.
      */
     public static Object deserialize(Object collectionType, List<ByteBuffer> bbList) {
@@ -157,7 +152,7 @@ public final class CassandraTypeDeserializer {
     /**
      * Get TypeDeserializer of AbstractType
      *
-     * @param abstractType the {@link AbstractType} of a column in cassandra
+     * @param abstractType the AbstractType of a column in cassandra
      * @return the TypeDeserializer of the AbstractType.
      */
     public static TypeDeserializer getTypeDeserializer(Object abstractType) {

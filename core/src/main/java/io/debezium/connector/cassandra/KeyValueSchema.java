@@ -36,12 +36,12 @@ public class KeyValueSchema {
     }
 
     public static class KeyValueSchemaBuilder {
-        private static String NAMESPACE = "io.debezium.connector.cassandra";
+        private static final String NAMESPACE = "io.debezium.connector.cassandra";
         private String keyspace;
         private String table;
         private TableMetadata tableMetadata;
         private String kafkaTopicPrefix;
-        private SourceInfoStructMaker sourceInfoStructMaker;
+        private SourceInfoStructMaker<?> sourceInfoStructMaker;
         private List<String> primaryKeyNames;
         private List<Schema> primaryKeySchemas;
         private Schema rowSchema;
@@ -61,7 +61,7 @@ public class KeyValueSchema {
             return this;
         }
 
-        public KeyValueSchemaBuilder withSourceInfoStructMarker(SourceInfoStructMaker sourceInfoStructMarker) {
+        public KeyValueSchemaBuilder withSourceInfoStructMarker(SourceInfoStructMaker<?> sourceInfoStructMarker) {
             this.sourceInfoStructMaker = sourceInfoStructMarker;
             return this;
         }

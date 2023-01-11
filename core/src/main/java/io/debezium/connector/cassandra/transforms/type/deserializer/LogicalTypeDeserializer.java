@@ -14,7 +14,7 @@ import io.debezium.connector.cassandra.transforms.DebeziumTypeDeserializer;
  */
 public abstract class LogicalTypeDeserializer extends AbstractTypeDeserializer {
 
-    private Object abstractType;
+    private final Object abstractType;
 
     public LogicalTypeDeserializer(DebeziumTypeDeserializer deserializer, Integer dataType, Object abstractType) {
         super(deserializer, dataType, abstractType.getClass());
@@ -27,8 +27,8 @@ public abstract class LogicalTypeDeserializer extends AbstractTypeDeserializer {
     }
 
     /**
-     * Format deserialized value from Cassandra to an object that fits it's kafka Schema.
-     * @param abstractType the {@link AbstractType} of a column in cassandra
+     * Format deserialized value from Cassandra to an object that fits its Kafka Schema.
+     * @param abstractType the AbstractType of a column in cassandra
      * @param value the deserialized value of a column in cassandra
      * @return the formatted object from deserialized value
      */

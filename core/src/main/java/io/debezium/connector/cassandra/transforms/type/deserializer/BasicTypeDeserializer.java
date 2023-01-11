@@ -13,7 +13,7 @@ import io.debezium.connector.cassandra.transforms.DebeziumTypeDeserializer;
 
 public class BasicTypeDeserializer extends AbstractTypeDeserializer {
 
-    private Object abstractType;
+    private final Object abstractType;
     private final SchemaBuilder schemaBuilder;
 
     public BasicTypeDeserializer(DebeziumTypeDeserializer deserializer, Integer dataType, Object abstractType,

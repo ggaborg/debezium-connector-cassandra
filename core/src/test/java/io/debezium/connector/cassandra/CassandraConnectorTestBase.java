@@ -61,7 +61,7 @@ public abstract class CassandraConnectorTestBase {
     }
 
     @AfterClass
-    public static void tearDownClass() throws IOException, InterruptedException {
+    public static void tearDownClass() {
         cassandra.stop();
     }
 
@@ -91,7 +91,7 @@ public abstract class CassandraConnectorTestBase {
                 .pollInSameThread()
                 .timeout(1, MINUTES)
                 .until(() -> {
-                    try (final CqlSession ignored = CqlSession.builder().build()) {
+                    try (CqlSession ignored = CqlSession.builder().build()) {
                         return true;
                     }
                     catch (Exception ex) {

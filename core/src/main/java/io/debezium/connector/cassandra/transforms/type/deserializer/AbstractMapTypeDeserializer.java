@@ -59,7 +59,7 @@ public abstract class AbstractMapTypeDeserializer extends CollectionTypeDeserial
     /**
      * If elements in a deserialized map is LogicalType, convert each element to fit in Kafka Schema type
      *
-     * @param abstractType    the {@link AbstractType} of a column in Cassandra
+     * @param abstractType    the AbstractType of a column in Cassandra
      * @param deserializedMap Map deserialized from Cassandra
      * @return A deserialized map from Cassandra with each element that fits in Kafka Schema type
      */
